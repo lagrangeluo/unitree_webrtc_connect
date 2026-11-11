@@ -1,334 +1,138 @@
-# Unitree WebRTC Connect
+# Go2 Web · Go2 Air 可视化控制台
 
-Python WebRTC driver for Unitree Go2, G1 and R1 robots. Provides high-level control through the same WebRTC protocol used by the Unitree Go/Unitree Explore mobile apps — no jailbreak or firmware modification required.
+在 macOS 上通过浏览器连接自己的宇树 Go2 Air，查看前方视频、机器狗跟随视角、实时三维体素地图和关节状态，并进行手动遥控、二维建图与目标点导航。
 
-![Screenshot](https://github.com/legion1581/unitree_webrtc_connect/raw/master/images/screenshot_1.png)
+本项目以 `go2_web/` 为主要应用入口，使用 Python WebRTC 服务连接机器人，通过 WebSocket 向浏览器传输状态和媒体数据，前端使用 Three.js 渲染三维场景。开发与排障围绕 Go2 Air 普通版和本机 macOS 环境展开。
 
-[![PyPI](https://img.shields.io/pypi/v/unitree-webrtc-connect.svg)](https://pypi.org/project/unitree-webrtc-connect/)
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/legion1581/unitree_webrtc_connect)](https://github.com/legion1581/unitree_webrtc_connect/releases)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+项目基于 `legion1581/unitree_webrtc_connect` 开发，三维感知界面借鉴并移植了 `legion1581/unitree_ui` 中的实现。具体来源见文末「来源与致谢」。
 
-## Supported Models
+## 当前功能
 
-| Model | Variants |
-|-------|----------|
-| **Go2** | AIR, PRO, EDU |
-| **G1** | AIR, EDU |
-| **R1** | AIR, PRO, EDU |
+| 功能 | 实现内容 |
+| --- | --- |
+| 连接与设备发现 | LocalSTA 局域网连接，支持指定 IP 或按序列号自动发现机器人 |
+| 实时视频 | 接收机器人前方摄像头画面，在控制台显示 |
+| 三维感知 | Go2 模型、实时关节姿态、随航向变化的跟随相机、总览视角切换 |
+| 三维地图 | 解码压缩体素数据，使用纹理三角网格渲染实时局部地图 |
+| 手动遥控 | 双摇杆、键盘、速度比例调整、普通／AI 模式切换和姿态操作 |
+| 避障开关 | 查询和切换机器人避障状态，按状态选择手动驾驶指令通道 |
+| 实时建图 | 二维占据栅格、扫描匹配漂移校正、地图清空与位姿显示 |
+| 目标点导航 | 在地图上指定位置和朝向，A* 路径规划、路径跟随、受阻重规划与停车检查 |
+| 控制状态管理 | 解锁／锁定、停止按钮、页面失焦锁定、控制心跳超时处理 |
+| 局域网访问 | 可选 `--lan`，供同一局域网中的 iPad 等设备访问 |
 
-## Supported Firmware
+## 环境与连接要求
 
-| Robot | Firmware Versions | Auth |
-|-------|-------------------|------|
-| **Go2** | 1.0.19 – 1.0.25<br>1.1.1 – 1.1.14<br>1.1.15+ *(latest)* | static GCM key (`data2=2`)<br>static GCM key (`data2=2`)<br>per-device AES-128 key (`data2=3`) — see [AES-128 Key](#aes-128-key-data23-g1--151--go2--1115--all-r1) |
-| **G1** | 1.2.0 – 1.4.5<br>1.5.1+ *(latest)* | static GCM key (`data2=2`)<br>per-device AES-128 key (`data2=3`) — see [AES-128 Key](#aes-128-key-data23-g1--151--go2--1115--all-r1) |
-| **R1** | 1.4.2 *(latest)* | per-device AES-128 key (`data2=3`) — see [AES-128 Key](#aes-128-key-data23-g1--151--go2--1115--all-r1) |
+- **开发环境**为 macOS，当前离线验证使用 Python 3.13.18 和 Chrome。底层包在 `pyproject.toml` 中声明 Python ≥ 3.8，`go2_web` 的其他 Python 版本兼容性仍需验证。
+- **机器人**以 Go2 Air 普通版为开发目标，Go2 固件 1.1.15 及以上的本地握手需要设备专属的 32 位十六进制 AES 密钥。
+- **网络**采用 LocalSTA，Mac 与机器人连接到同一局域网。Web 控制台当前连接流程使用该模式。
+- **设备地址**可直接设置 `UNITREE_ROBOT_IP`，也可设置 `UNITREE_ROBOT_SN` 后自动发现。固件 1.1.15 及以上的定向发现需要序列号，实际结果取决于机器人固件及局域网组播条件。
 
-## Features
+## 安装
 
-| Feature | Go2 | G1 | R1 |
-|---------|:---:|:--:|:--:|
-| Data channel (pub/sub, RPC) | yes | yes | yes |
-| Sport / arm-action control | yes | yes | yes |
-| FSM state control (`fsm_id`) | — | yes | yes |
-| Video stream (receive) | yes | yes | yes |
-| Audio stream (send/receive) | yes | — | — |
-| LiDAR point cloud decoding | yes | — | — |
-| VUI (LED, brightness, volume) | yes | — | — |
-| AudioHub (audio file management) | yes | — | — |
-| Obstacle avoidance API | yes | — | — |
-| Multicast device discovery | yes | SN-targeted | SN-targeted |
-| `data2=3` per-device key auth | yes (Go2 ≥ 1.1.15) | yes (G1 ≥ 1.5.1) | yes (always) |
-
-"SN-targeted" discovery means the firmware only answers a query carrying its
-own serial number, so it can confirm an address but not enumerate the network.
-
-The humanoids (G1 and R1) share the Unitree Explorer account namespace, one
-control channel and one topic set. Where they differ is the FSM state table:
-R1's Run is `811`, not G1's `801`, and it carries its own dance / martial-arts
-states. See `R1_FSM` in `constants.py`.
-
-## Installation
-
-### PyPI (recommended)
+克隆本仓库并进入项目根目录。
 
 ```sh
-sudo apt update
-sudo apt install -y python3-pip portaudio19-dev
-pip install unitree_webrtc_connect
-```
-
-### From source
-
-```sh
-sudo apt update
-sudo apt install -y python3-pip portaudio19-dev
-git clone https://github.com/legion1581/unitree_webrtc_connect.git
+git clone https://github.com/lagrangeluo/unitree_webrtc_connect.git
 cd unitree_webrtc_connect
-pip install -e .
 ```
 
-## Quick Start
-
-```python
-from unitree_webrtc_connect import UnitreeWebRTCConnection, WebRTCConnectionMethod
-
-# Legacy firmware (Go2 < 1.1.15, G1 < 1.5.1) — no extra auth needed
-conn = UnitreeWebRTCConnection(WebRTCConnectionMethod.LocalSTA, ip="192.168.123.18")
-await conn.connect()
-
-# V3-capable firmware (G1 ≥ 1.5.1, Go2 ≥ 1.1.15) — per-device AES-128 key
-# required for the LAN handshake (see "AES-128 Key" below for how to fetch it)
-conn = UnitreeWebRTCConnection(
-    WebRTCConnectionMethod.LocalSTA,
-    ip="192.168.10.225",
-    aes_128_key="<32-hex-chars>",
-)
-await conn.connect()
-```
-
-## Connection Methods
-
-### AP Mode
-Robot is in Access Point mode, client connects directly to the robot's WiFi.
-
-```python
-UnitreeWebRTCConnection(WebRTCConnectionMethod.LocalAP)
-
-# V3-capable firmware (G1 ≥ 1.5.1, Go2 ≥ 1.1.15) in AP mode
-UnitreeWebRTCConnection(
-    WebRTCConnectionMethod.LocalAP,
-    aes_128_key="<32-hex-chars>",
-)
-```
-
-### STA-L Mode (Local Network)
-Robot and client are on the same local network. Requires IP or serial number.
-
-```python
-# By IP
-UnitreeWebRTCConnection(WebRTCConnectionMethod.LocalSTA, ip="192.168.8.181")
-
-# By serial number (uses multicast discovery). Pass device_type so the
-# scanner queries the right multicast group — the humanoids don't announce
-# on the Go2 group. Note that G1 >= 1.5.1 and every R1 ignore untargeted
-# queries and reply only to one naming their own SN, so discovery finds
-# them only when you already know the serial.
-UnitreeWebRTCConnection(WebRTCConnectionMethod.LocalSTA, serialNumber="B42D2000XXXXXXXX")
-UnitreeWebRTCConnection(
-    WebRTCConnectionMethod.LocalSTA,
-    serialNumber="E21D6000XXXXXXXX",
-    device_type="R1",              # or "G1" — same multicast groups
-    aes_128_key="<32-hex-chars>",
-)
-
-# V3-capable firmware (G1 ≥ 1.5.1, Go2 ≥ 1.1.15) by IP, with per-device key
-UnitreeWebRTCConnection(
-    WebRTCConnectionMethod.LocalSTA,
-    ip="192.168.10.225",
-    aes_128_key="<32-hex-chars>",
-)
-```
-
-### STA-T Mode (Remote)
-Remote connection through Unitree's TURN server. Control your robot from a different network. Requires Unitree account credentials.
-
-`region` and `device_type` pick the cloud endpoint and the `AppName` header — `Go2` hits `global-robot-api.unitree.com` with `AppName: Go2`, `G1` does the same host with `AppName: G1`. Use `region="cn"` for accounts registered in China.
-
-```python
-# Go2 (default)
-UnitreeWebRTCConnection(
-    WebRTCConnectionMethod.Remote,
-    serialNumber="B42D2000XXXXXXXX",
-    username="email@gmail.com",
-    password="pass",
-)
-
-# G1 in China region
-UnitreeWebRTCConnection(
-    WebRTCConnectionMethod.Remote,
-    serialNumber="E21D6000XXXXXXXX",
-    username="email@gmail.com",
-    password="pass",
-    region="cn",
-    device_type="G1",
-)
-```
-
-## AES-128 Key (`data2=3`, G1 ≥ 1.5.1 / Go2 ≥ 1.1.15 / all R1)
-
-Starting with G1 firmware **1.5.1** (back-ported to Go2 firmware **1.1.15**), the LAN signaling handshake (`con_notify`) returns `data2=3`, which means the embedded RSA public key is wrapped under a **per-device AES-128-GCM key**. Without that key the WebRTC handshake can't decrypt the public key and the connection never starts. (Older firmware — G1 < 1.5.1 / Go2 < 1.1.15 — uses a static AES-GCM key, handled automatically.) **R1 shipped after the cutover, so every R1 needs a key.**
-
-The key is **per device**, **stable across re-pairings**, stored on the robot at `/unitree/etc/key/aes_key.bin` (RSA-wrapped), and surfaced to the cloud as `dev.key` in `device/bind/list`.
-
-### Fetch via the bundled CLI
-
-After `pip install unitree_webrtc_connect` you get a console script:
+首次使用时创建虚拟环境。已有 `venv/` 时直接激活，所有 Python 安装和运行命令均在该环境内执行。
 
 ```sh
-# By default: region=global, device family=G1.
-# Use --device-type Go2 for Unitree Go2 (≥ 1.1.15), or R1 for Unitree R1.
-# G1 and R1 share one Unitree Explorer account, so either lists both.
-unitree-fetch-aes-key --email you@example.com --password '...'
-
-# Go2 in global region:
-unitree-fetch-aes-key --email you@example.com --password '...' --device-type Go2
-
-# China region:
-unitree-fetch-aes-key --email you@example.com --password '...' --region cn
-
-# Single SN, scriptable (bare key on stdout):
-unitree-fetch-aes-key --email you@example.com --sn E21D6000XXXXXXXX --quiet
-
-# Pre-existing access token (skip login):
-unitree-fetch-aes-key --token <accessToken> --sn E21D6000XXXXXXXX
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install -e .
+python -m pip install -r go2_web/requirements.txt
 ```
 
-Equivalent if you don't have it on `$PATH`:
-```sh
-python -m unitree_webrtc_connect._cli --help
-```
+macOS 若在安装音频依赖时提示缺少 PortAudio，可先执行 `brew install portaudio`，再重试虚拟环境内的依赖安装。前端依赖和三维资源已包含在仓库中，运行控制台直接使用 Python 服务。
 
-The interactive output is a labelled panel (SN / alias / online / region / key); `--quiet` swaps that for a bare key on stdout so you can pipe it:
+## 配置与启动
+
+以下命令使用 macOS 默认 zsh。在已激活虚拟环境的终端中设置机器人的局域网 IP，并交互输入 AES 密钥。
 
 ```sh
-KEY=$(unitree-fetch-aes-key --email ... --sn E21D... --quiet)
+export UNITREE_ROBOT_IP='你的机器人局域网IP'
+read -s 'UNITREE_AES_KEY?请输入设备 AES 密钥: '
+echo
+export UNITREE_AES_KEY
+python -m go2_web
 ```
 
-### Fetch programmatically
+浏览器打开 **http://127.0.0.1:8765**，点击「连接机器人」后开始接收数据。重新打开终端后，需要再次激活虚拟环境并设置环境变量。
 
-```python
-from unitree_webrtc_connect import UnitreeCloud, fetch_aes_key
+如需自动发现地址，用序列号配置替代指定 IP，然后启动服务。
 
-# One-shot lookup
-key = fetch_aes_key("you@example.com", "...", sn="E21D6000XXXXXXXX",
-                    region="global", device_type="G1")
-
-# Or keep the cloud client around for other calls
-cloud = UnitreeCloud(region="global", device_type="G1")
-cloud.login_email("you@example.com", "...")
-for d in cloud.list_devices():
-    print(d.sn, d.alias, d.key)
+```sh
+unset UNITREE_ROBOT_IP
+read -r 'UNITREE_ROBOT_SN?请输入机器人序列号: '
+export UNITREE_ROBOT_SN
+python -m go2_web
 ```
 
-### Typed errors
+AES 密钥可通过底层库提供的工具，从绑定该机器人的宇树账号查询。以下示例适用于中国区 Go2 账号，密码会交互输入，其他地区使用 `--region global`。
 
-When you supply the wrong / missing key, the SDK raises typed exceptions you can catch instead of relying on stack traces:
-
-```python
-from unitree_webrtc_connect import (
-    AesKeyRequiredError,    # data2=3 robot reached without a key
-    AesKeyRejectedError,    # GCM tag check failed (wrong key)
-    LocalSignalingPortError, # neither :9991 nor :8081 reachable on the IP
-    RobotBusyError,          # robot rejected — another WebRTC client is connected
-    NoSdpAnswerError,        # signaling round-trip returned no SDP
-    DataChannelTimeoutError, # data channel didn't validate in time
-)
-
-try:
-    await conn.connect()
-except AesKeyRejectedError as e:
-    ...
+```sh
+python -m unitree_webrtc_connect._cli --email '你的账号邮箱' --region cn --device-type Go2
 ```
 
-## Examples
+账号密码、令牌、AES 密钥和真实序列号只用于本地配置。提交代码和分享日志前请移除这些信息。
 
-Examples are organized by robot model under the `/examples` directory.
+需要同一局域网中的其他设备访问时，使用下面的启动命令，并打开终端打印的局域网地址。
 
-All examples default to `ip="192.168.8.181"` but read the `UNITREE_ROBOT_IP`
-environment variable if set, so you can point them at your robot without
-editing the source:
-
-```bash
-export UNITREE_ROBOT_IP=192.168.8.181
-python examples/go2/data_channel/sportmode/sportmode.py
+```sh
+python -m go2_web --lan
 ```
 
-On V3-capable firmware (G1 ≥ 1.5.1, Go2 ≥ 1.1.15), also set
-`UNITREE_AES_128_KEY` (fetch via `unitree-fetch-aes-key`).
+`--lan` 模式没有用户鉴权，同一网络中的设备可接管控制，请仅在可信局域网内使用。新打开的控制页面会接管连接，旧页面会断开。
 
-### Go2
+## 使用
 
-| Category | Example | Description |
-|----------|---------|-------------|
-| **Data Channel** | `data_channel/sportmode/` | Sport mode movement commands |
-| | `data_channel/sportmode_mcf/` | Interactive MCF sport menu (firmware ≥ 1.1.7) |
-| | `data_channel/sportmodestate/` | Subscribe to sport mode state |
-| | `data_channel/lowstate/` | Subscribe to low-level state (IMU, motors) |
-| | `data_channel/multiplestate/` | Subscribe to multiple state topics |
-| | `data_channel/vui/` | VUI control (LED, volume, brightness) |
-| | `data_channel/obstacles_avoid/` | Toggle obstacle avoidance + WASD drive |
-| | `data_channel/lidar/lidar_stream.py` | LiDAR point cloud subscription |
-| | `data_channel/lidar/plot_lidar_stream.py` | LiDAR 3D visualization (Three.js) |
-| **Audio** | `audio/live_audio/` | Live audio receive |
-| | `audio/save_audio/` | Save audio to file |
-| | `audio/mp3_player/` | Play MP3 through robot speaker |
-| | `audio/internet_radio/` | Stream internet radio |
-| **Video** | `video/camera_stream/` | Display video stream |
+1. 确认机器人已开机、Mac 与机器人处于同一局域网，并关闭其他占用 WebRTC 连接的客户端。
+2. 点击「连接机器人」，查看视频、位姿、关节和地图是否持续更新。
+3. 三维感知默认跟随机器狗，点击「切换总览」或双击画布进入总览，可旋转、平移和缩放，再次切换返回跟随。
+4. 需要移动时，在空旷场地解锁控制。左摇杆控制前后与侧移，右摇杆控制转向，键盘 ↑／↓ 控制前后、←／→ 控制转向、A／D 控制侧移。速度滑条默认 50%。
+5. 实时建图面板可查看二维地图与当前位姿。解锁后点击「导航目标」，在已观测的可通行区域按下设置位置、拖动设置朝向，松开发送目标。
+6. 使用停止按钮或空格停止并锁定。页面失焦、心跳超时和导航数据过期也会触发控制状态处理。
 
-### G1
+软件停止依赖连接和机器人响应，实机操作时应保留可用遥控器。目标导航处于实验阶段，低矮障碍、玻璃、镜面、动态障碍与里程计漂移都可能影响通行判断，需低速实测。
 
-| Category | Example | Description |
-|----------|---------|-------------|
-| **Data Channel** | `data_channel/sport_mode/` | Sport mode movement commands |
-| **Video** | `video/camera_stream/` | Display video stream |
+详细的指令行为、建图参数、导航停止条件与排障说明见 [Web 控制台使用说明](go2_web/README.md)。
 
-### R1
+## 代码结构
 
-| Category | Example | Description |
-|----------|---------|-------------|
-| **Data Channel** | `data_channel/fsm_mode/` | Interactive FSM state menu — switch states, read `fsm_id` back, decode refusals |
-| | `data_channel/arm_actions/` | Interactive upper-limb gesture menu |
-| | `data_channel/teleop/` | Realtime WASD teleop — hold to drive, ramped, auto-stop on release |
-| | `data_channel/lowstate/` | Live battery / motors / IMUs / board temperature |
-| **Video** | `video/camera_stream/` | Display video stream |
-
-## Imports
-
-All public classes, helpers and exception types are exported from the package root:
-
-```python
-from unitree_webrtc_connect import (
-    # Core driver
-    UnitreeWebRTCConnection,
-    WebRTCConnectionMethod,
-    WebRTCDataChannel,
-    WebRTCDataChannelPubSub,
-    DATA_CHANNEL_TYPE,
-    RTC_TOPIC,
-    SPORT_CMD,
-    discover_ip_sn,
-
-    # Humanoid (G1 / R1) control
-    LOCO_API,
-    LOCO_FSM_ERRORS,
-    R1_FSM,
-    ARM_ACTION,
-
-    # Cloud helpers (data2=3, account / TURN flow, bind list)
-    UnitreeCloud,
-    UnitreeCloudError,
-    RobotDevice,
-    fetch_aes_key,
-
-    # Typed errors
-    AesKeyRequiredError,
-    AesKeyRejectedError,
-    DataChannelTimeoutError,
-    LocalSignalingPortError,
-    NoSdpAnswerError,
-    RobotBusyError,
-)
+```text
+go2_web/
+  __main__.py             Python 服务、连接、状态与控制接口
+  slam.py                 二维建图、漂移校正、路径规划与导航
+  static/                 Web 页面、Three.js 场景、模型与 WASM
+  checks/                 离线回归检查
+unitree_webrtc_connect/   基于上游的 WebRTC 通信库
+examples/                上游保留的 Go2、G1、R1 示例
 ```
 
-## Acknowledgements
+底层库保留上游 G1、R1 等接口与示例，当前 Web 应用的开发目标和验证范围围绕 Go2 Air。
 
-A big thank you to RoboLegion community! Visit us at [RoboLegion](https://robolegion.com) for more information and support.
+## 验证范围
 
-Special thanks to the [tfoldi WebRTC project](https://github.com/tfoldi/go2-webrtc) and [abizovnuralem](https://github.com/abizovnuralem) for adding LiDAR support, [MrRobotoW](https://github.com/MrRobotoW) for the LiDAR visualization example, and [Nico](https://github.com/oulianov) for the aiortc monkey patch.
+在项目根目录使用现有虚拟环境执行语法检查和离线回归检查。
 
-## Support
+```sh
+venv/bin/python -m compileall -q go2_web unitree_webrtc_connect
+venv/bin/python -m unittest discover -s go2_web/checks -v
+```
 
-If you like this project, please consider buying me a coffee:
+最近一次检查在 macOS 27.0.1、Python 3.13.18 下完成，42 项离线回归检查通过，覆盖设备发现、点云链路、驾驶限速、避障通道、建图与导航状态处理。三维界面曾使用 Chrome 和离线压缩体素数据验证模型加载、WASM 解码、网格渲染及视角切换。
 
-<a href="https://www.buymeacoffee.com/legion1581" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+上述离线检查未连接机器人，机器人固件未核验。实际连接模式配置为 LocalSTA，视频、实机地图对齐、运动与导航效果需要在自己的 Go2 Air 上分别验收。
+
+## 来源与致谢
+
+本仓库在开源项目基础上开发，主要借鉴与移植关系如下。
+
+- **`legion1581/unitree_webrtc_connect`** 是本仓库克隆与后续开发的基础，提供 Python WebRTC 连接、数据通道、消息订阅与 RPC、媒体流、设备发现、鉴权及 LiDAR 解码。本项目在此基础上增加了 `go2_web` 控制台、地图与导航功能，并调整了点云消息处理。[原始通信库仓库](https://github.com/legion1581/unitree_webrtc_connect)
+- **`legion1581/unitree_ui`** 提供了三维感知界面的参考实现。本项目借鉴并移植其中的 `scene.ts`、`robot-model.ts`、`voxel-map.ts` 和 `voxel-worker.ts`，沿用 Go2 模型、体素纹理、HDR 环境及 WASM 资源，并适配到 Python 服务与浏览器 WebSocket 数据链路。[原始可视化界面仓库](https://github.com/legion1581/unitree_ui)
+- **Three.js** 用于浏览器三维渲染，仓库内包含其运行时及相关加载器、控制器。[Three.js 仓库](https://github.com/mrdoob/three.js)
+
+项目采用 MIT 许可证，保留上游版权声明。具体条款见 [项目许可证](LICENSE)、[Unitree UI 许可证](go2_web/static/three/UNITREE_UI_LICENSE.txt) 和 [Three.js 许可证](go2_web/static/three/LICENSE.txt)。
