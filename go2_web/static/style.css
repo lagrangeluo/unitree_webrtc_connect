@@ -1,0 +1,327 @@
+:root{color-scheme:dark;--bg:#0b0e13;--panel:#131820;--line:#26303c;--muted:#83909f;--cyan:#55e7cf;--red:#ff666e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#edf2f7;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;font-size:14px}button{font:inherit;cursor:pointer;border:1px solid var(--line);background:#1b222c;color:#dae3ec;border-radius:7px;padding:10px 15px;transition:background .15s}button:hover{background:#2a3543}button:disabled{opacity:.4;cursor:not-allowed}button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}header{height:84px;border-bottom:1px solid var(--line);padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:#10151b}.brand{display:flex;align-items:center;gap:12px;font-size:23px;font-weight:750;letter-spacing:2px}.brand b{font-size:11px;border:1px solid #586575;padding:2px 5px;color:#a8b7c6;vertical-align:middle}.brand small{display:block;font-size:8px;color:var(--muted);letter-spacing:2px;margin-top:6px}.brand-icon{border:3px solid var(--cyan);color:var(--cyan);width:34px;height:34px;border-radius:3px 3px 15px 15px;text-align:center;line-height:27px}.top-status{display:flex;align-items:center;gap:9px;color:#9cabb9;font-size:12px}.top-status i,.live-dot{width:6px;height:6px;border-radius:50%;display:inline-block;background:#6b7a8e}.top-status i.on,.live-dot{background:var(--cyan);box-shadow:0 0 12px #55e7cf44}.divider{height:16px;width:1px;background:var(--line);margin:0 12px}.primary{background:var(--cyan);color:#052820;border:0;font-weight:650;padding:12px 20px}.primary:hover{background:#8bf5e2}main{max-width:1680px;margin:auto;padding:28px 40px 12px}.heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.eyebrow{font-size:10px;letter-spacing:2px;color:#8d9daf}h1{font-size:25px;letter-spacing:1px;font-weight:600;margin:10px 0 0}h1 span{font-size:12px;color:var(--muted);font-weight:400;margin-left:18px;letter-spacing:0}.device-tag{font-size:12px;font-weight:650;letter-spacing:1px}.device-tag span{color:var(--muted);margin-left:16px;font-size:10px}.workspace{display:grid;grid-template-columns:1.45fr 1fr;gap:18px}.camera{grid-column:1/-1}.first-person{grid-column:1;grid-row:2}.cloud{grid-column:2;grid-row:2}.first-person-body{display:grid;grid-template-columns:minmax(0,1fr) 240px;min-height:390px}.fp-view{position:relative;min-height:390px;background:#0a1118;overflow:hidden}.fp-view canvas{width:100%;height:100%;display:block}.fp-help{position:absolute;bottom:14px;left:16px;color:#6f8795;font-size:10px}.compact-camera{margin-top:18px}.compact-camera .panel-head{height:40px;padding:0 12px}.compact-camera .camera-view{aspect-ratio:16/9}.compact-camera .telemetry{display:none}.joints{border-left:1px solid var(--line);padding:16px 14px;background:#101820}.joint-title{font-size:11px;color:#aebec8;display:flex;justify-content:space-between;margin-bottom:12px}.joint-title span{color:var(--cyan);font-size:10px}.joint-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #22303a;color:#79909d;font-size:10px}.joint-row b{color:#d8e5eb;font-weight:500;font-variant-numeric:tabular-nums}.joint-empty{color:#637986;font-size:10px;padding:20px 0}.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}.panel-head{height:52px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #222b36}h2{font-size:13px;font-weight:550;margin:0;display:flex;align-items:center;gap:9px}h2 small{font-size:9px;letter-spacing:1.4px;color:#6c7b8d;margin-left:4px}.badge{color:#8b9bac;background:#202833;padding:4px 8px;border-radius:4px;font-size:10px}.badge.fresh{color:var(--cyan);background:#55e7cf13}.camera-view{aspect-ratio:16/9;position:relative;background:radial-gradient(ellipse at 50% 50%,#19232a,#0d1319 75%);display:flex;align-items:center;justify-content:center;overflow:hidden}.camera-view img{width:100%;height:100%;object-fit:contain}.empty{text-align:center;color:#a7b3bf}.camera-symbol{font-size:45px;color:#526373;font-weight:200}.empty h3{font-size:16px;font-weight:450;margin:12px 0}.empty p{font-size:12px;color:#748696}.empty>span{font-size:9px;color:#4d6272;letter-spacing:1px}.reticle{position:absolute;width:40px;height:40px;border:1px solid #5bd7c144;pointer-events:none;clip-path:polygon(0 0,30% 0,30% 3%,3% 3%,3% 30%,0 30%,0 0,100% 0,100% 30%,97% 30%,97% 3%,70% 3%,70% 0,100% 0,100% 100%,70% 100%,70% 97%,97% 97%,97% 70%,100% 70%,100% 100%,0 100%,0 70%,3% 70%,3% 97%,30% 97%,30% 100%,0 100%)}.frame-label{position:absolute;bottom:15px;left:20px;font-size:9px;letter-spacing:1.5px;color:#8b9da9}.frame-label.right{left:auto;right:20px}.telemetry{height:80px;display:flex;align-items:center;padding:10px 0}.telemetry>div{flex:1;border-right:1px solid var(--line);padding:0 18px}.telemetry>div:last-child{border:0}.telemetry span{font-size:10px;color:var(--muted);display:block;margin-bottom:8px}.telemetry strong{font-size:20px;font-variant-numeric:tabular-nums;font-weight:500}.telemetry small{font-size:10px;color:var(--muted);margin-left:6px}.cloud{display:flex;flex-direction:column}.cloud-source{display:flex;align-items:center;gap:6px;margin-left:auto;margin-right:12px}.cloud-source label{font-size:9px;color:#718694}.cloud-source select{max-width:200px;background:#18232d;color:#c7d5df;border:1px solid #31404c;border-radius:5px;padding:5px 7px;font-size:10px}.cloud-top #lidar-meta{margin-left:12px;color:#66818e;font-size:9px}.cloud-view{position:relative;flex:1;min-height:260px;background:#0c131a}.cloud canvas{width:100%;height:100%;position:absolute;touch-action:none}.cloud-top{position:absolute;top:15px;left:18px;right:15px;display:flex;align-items:center;justify-content:space-between;color:#8297a8;font-size:9px;letter-spacing:1px}.subtle{background:#15202a99;font-size:10px;padding:6px 8px}.cloud-empty{position:absolute;top:45%;width:100%;text-align:center;color:#677c8b;font-size:12px;pointer-events:none}.cloud-help{position:absolute;bottom:18px;right:18px;font-size:10px;color:#698292}.axis{position:absolute;bottom:18px;left:18px;color:#fa8b89;font-size:11px}.axis span{color:var(--cyan);margin:0 8px}.axis b{color:#7ba9ff;font-weight:400}.cloud-footer{height:42px;border-top:1px solid var(--line);display:flex;align-items:center;gap:7px;padding:0 18px;color:#a2b2c0;font-size:10px}.cloud-footer i{width:5px;height:5px;background:var(--cyan);border-radius:50%}.cloud-footer span{margin-left:auto;color:#667d8f;font-size:9px}.controls{display:grid;grid-template-columns:1fr 1.5fr .85fr;gap:18px;margin-top:18px}.mode-switch{display:flex;margin:18px 18px 14px;padding:4px;background:#0b1118;border-radius:7px}.mode-switch button{flex:1;border:0;background:none;font-size:12px}.mode-switch button.active{color:var(--cyan);background:#203b3a}.poses{display:flex;gap:8px;padding:0 18px}.poses button{flex:1;padding:12px 3px;font-size:11px;background:#1b242f}.poses button span{display:block;font-size:23px;color:#9cb2c6;margin-bottom:8px}.hint{font-size:10px;line-height:1.7;color:#728494;padding:0 18px;margin:14px 0}.lock{font-size:10px;padding:7px 10px;color:#9aabba;background:#1d2834}.lock.armed{color:var(--cyan);border-color:#4dbda8}.sticks{display:flex;justify-content:space-around;align-items:center;padding:20px 12px 15px;gap:8px}.stick-group{text-align:center}.joystick{width:136px;height:136px;border-radius:50%;border:1px solid #344451;background:radial-gradient(circle,#24343f 0,#18232d 45%,#101820 46%,#15202a 70%);position:relative;touch-action:none;user-select:none}.joystick::before{content:"";position:absolute;inset:16px;border:1px dashed #3f556344;border-radius:50%}.knob{position:absolute;left:50%;top:50%;margin:-25px;width:50px;height:50px;border-radius:50%;border:1px solid #5a7a84;background:radial-gradient(circle at 35% 25%,#405b64,#1c3038);box-shadow:0 5px 12px #0007;pointer-events:none}.stick-cross{position:absolute;inset:20px;background:linear-gradient(transparent 49.5%,#4c6b7c33 50%,transparent 50.5%),linear-gradient(90deg,transparent 49.5%,#4c6b7c33 50%,transparent 50.5%)}.north,.south{position:absolute;width:100%;left:0;font-size:8px;color:#708994;top:6px}.south{top:auto;bottom:6px}.stick-caption{margin-top:10px;font-size:11px;color:#bdcbd5}.stick-caption span{font-size:9px;color:#667f8e;margin-left:5px}.drive-center{text-align:center;color:#718594;font-size:9px}.speed-control{margin:11px auto 4px;width:150px;text-align:left}.speed-control>div:first-child{display:flex;justify-content:space-between;align-items:center;color:#8ca4b0;font-size:9px}.speed-control b{color:var(--cyan);font-size:10px;font-weight:550}.speed-control input{width:100%;height:4px;margin:10px 0 4px;accent-color:var(--cyan);cursor:pointer}.speed-scale{font-size:8px;color:#59717e}.speed-scale span:last-child{float:right}.drive-center strong{display:block;font-size:23px;color:#d7e9e8;margin:8px 0;font-weight:450;font-variant-numeric:tabular-nums}.drive-center small{font-size:9px;color:#7d919c}.drive-center p{line-height:1.9;font-size:10px}.deadman{font-size:8px;color:#53998e}.safety{padding:22px 20px}.safety .eyebrow{font-size:8px;color:#b78288}.safety h2{margin:13px 0;font-size:15px}.safety p{font-size:11px;color:#8c9ba8;line-height:1.9}.safety button{margin:8px 0 12px;width:100%;color:#ff9298;border-color:#82434b;background:#3f252d;font-size:12px;padding:12px}.safety>span:last-child{font-size:9px;color:#886f7a;line-height:1.9}footer{display:flex;justify-content:space-between;gap:20px;padding:18px 0;color:#6e8293;font-size:10px}#notice.error{color:#ff8c94}@media(min-width:1600px){.joystick{width:160px;height:160px}}@media(max-width:1100px){main{padding:24px}.controls{grid-template-columns:1fr 1.5fr}.safety{grid-column:1/-1}.workspace{grid-template-columns:1.3fr 1fr}.top-status{display:none}.joystick{width:120px;height:120px}header{padding:0 24px}.telemetry>div{padding:0 10px}.telemetry strong{font-size:16px}}@media(max-width:720px){.first-person-body{grid-template-columns:1fr}.compact-camera{margin-top:18px}.compact-camera .panel-head{height:40px;padding:0 12px}.compact-camera .camera-view{aspect-ratio:16/9}.compact-camera .telemetry{display:none}.joints{border-left:0;border-top:1px solid var(--line)}.fp-view{min-height:300px}.workspace,.controls{grid-template-columns:1fr}.cloud-view{height:320px;flex:auto}.safety{grid-column:auto}h1{font-size:20px}h1 span,.device-tag{display:none}.heading{margin-bottom:18px}main{padding:20px 14px}header{padding:0 16px;height:72px}.primary{font-size:12px;padding:10px}.telemetry{height:72px}.telemetry strong{font-size:15px}footer{flex-direction:column;gap:8px}.joystick{width:136px;height:136px}}
+
+.cloud canvas{cursor:grab}.cloud-help,.axis{pointer-events:none}
+
+/* Give the follow view enough horizontal space on desktop. */
+.workspace{grid-template-columns:minmax(0,1fr)}
+.first-person{grid-column:1;grid-row:auto}
+.cloud{grid-column:1;grid-row:auto}
+.first-person-body{grid-template-columns:minmax(0,1fr) 260px;min-height:560px}
+.fp-view{min-height:560px}
+.fp-view canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+.fp-actions{display:flex;gap:12px;align-items:center}
+.fp-help{pointer-events:none;color:#b0b7bf;background:#202020b0;padding:6px 9px;border-radius:4px}
+.cloud-view{height:320px;flex:auto}
+@media(max-width:720px){.first-person-body{grid-template-columns:minmax(0,1fr)}.fp-view{min-height:360px}.fp-actions{gap:5px}.first-person .panel-head{padding:0 10px}.first-person h2 small{display:none}}
+
+/* 三维感知与原始点云并排；实时画面浮在三维感知左上角；不显示关节列表。 */
+.workspace{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);align-items:stretch}
+.first-person,.cloud{grid-column:auto;grid-row:auto}
+.first-person{display:flex;flex-direction:column}
+.first-person-body{display:block;flex:1;min-height:520px}
+.fp-view{height:100%;min-height:520px}
+.cloud-view{height:auto;flex:1;min-height:420px}
+.fp-camera{position:absolute;top:12px;left:12px;z-index:2;width:min(34%,340px);margin:0;background:#131820e6;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 8px 24px #0008}
+.fp-camera .panel-head{height:32px;padding:0 10px}
+.fp-camera h2{font-size:11px}
+.fp-camera .camera-symbol{font-size:24px}
+.fp-camera .empty h3{font-size:12px;margin:6px 0}
+.fp-camera .empty p,.fp-camera .empty>span,.fp-camera .reticle,.fp-camera .frame-label{display:none}
+@media(max-width:1100px){.workspace{grid-template-columns:minmax(0,1fr)}.cloud-view{height:320px;flex:auto;min-height:0}}
+@media(max-width:720px){.fp-view{min-height:360px}.fp-camera{width:45%}}
+.fp-camera h2 small{display:none}.fp-camera h2{white-space:nowrap}
+
+.drive-actions{display:flex;gap:8px;align-items:center}.avoid-hint{margin:2px 0 6px;font-size:9px;color:#c98b6a;line-height:1.5}.avoid-hint.on{color:var(--cyan)}
+
+/* ── 触控与选中：像 App 一样，拖动摇杆或长按时不选中文字、不弹放大镜/菜单 ── */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+input,select,textarea{-webkit-user-select:auto;user-select:auto}
+#notice{-webkit-user-select:text;user-select:text}
+img,canvas{-webkit-user-drag:none;user-drag:none}
+button,select,input{touch-action:manipulation}
+canvas,.joystick{touch-action:none}
+
+/* ── 一屏布局：平板和桌面上整页刚好铺满视口，不需要上下滚动 ── */
+@media (min-width:700px) and (min-height:520px){
+  html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+  body{display:flex;flex-direction:column;height:100dvh}
+  header{height:52px;flex:none;padding:0 max(16px,env(safe-area-inset-left)) 0 max(16px,env(safe-area-inset-left))}
+  .brand{font-size:18px}.brand-icon{width:28px;height:28px;line-height:22px}.brand small{display:none}
+  .primary{padding:8px 16px}
+  main{flex:1;min-height:0;width:100%;max-width:none;display:flex;flex-direction:column;gap:10px;
+    padding:10px max(16px,env(safe-area-inset-right)) max(4px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+  .heading{display:none}
+  .workspace{flex:1;min-height:0;gap:10px;grid-template-rows:minmax(0,1fr)}
+  .first-person,.cloud{min-height:0}
+  .panel-head{height:40px;padding:0 14px}
+  .first-person-body,.fp-view{min-height:0}
+  .first-person-body{position:relative}
+  .fp-view{position:absolute;inset:0;height:auto}
+  .cloud-view{min-height:0;height:auto;flex:1}
+  .cloud-footer{display:none}
+  .controls{flex:none;margin-top:0;gap:10px;grid-template-columns:minmax(0,1fr) minmax(0,1.9fr) minmax(0,.75fr)}
+  .controls .panel-head{height:36px}
+  .mode-switch{margin:10px 12px 8px}
+  .poses{padding:0 12px}.poses button{padding:7px 3px}.poses button span{font-size:17px;margin-bottom:3px}
+  .hint{margin:8px 0;padding:0 12px}
+  .sticks{padding:8px 10px}
+  .joystick{width:clamp(92px,15vh,140px);height:clamp(92px,15vh,140px)}
+  .knob{width:42px;height:42px;margin:-21px}
+  .stick-caption{margin-top:4px}
+  .drive-center strong{margin:3px 0;font-size:20px}
+  .speed-control{margin:6px auto 2px}
+  .drive-center p{line-height:1.5;margin:4px 0}
+  .safety{padding:12px 14px;display:flex;flex-direction:column;justify-content:center}
+  .safety h2{margin:6px 0;font-size:13px}
+  .safety p{display:none}
+  .safety button{margin:6px 0;padding:14px 8px}
+  footer{flex:none;padding:4px 0 2px;font-size:10px}
+  footer>span:last-child{display:none}
+}
+/* 竖屏平板：三维感知在上、原始点云在下 */
+@media (min-width:700px) and (min-height:520px) and (orientation:portrait){
+  .workspace{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,3fr) minmax(0,2fr)}
+  .fp-camera{width:min(40%,300px)}
+}
+/* 横屏较矮时（iPad 横屏 + Safari 工具栏）进一步收紧控制区 */
+@media (min-width:700px) and (min-height:520px) and (max-height:820px){
+  .hint,.safety .eyebrow,.safety>span:last-child,.deadman,#drive-limits{display:none}
+  .poses button span{display:none}
+  .stick-caption span{display:none}
+}
+@media (min-width:700px) and (min-height:520px){
+  .safety{grid-column:auto}
+  .joystick{width:min(clamp(92px,15vh,140px),12.5vw);height:min(clamp(92px,15vh,140px),12.5vw)}
+  .panel-head h2{white-space:nowrap}
+  .cloud h2 small,.cloud-source label{display:none}
+  .cloud-source select{max-width:170px}
+}
+@media (min-width:700px) and (min-height:520px) and (max-width:1100px){
+  .controls{grid-template-columns:minmax(0,1fr) minmax(0,2.1fr) minmax(0,.7fr)}
+  .drive h2 small,.first-person h2 small{display:none}
+  .safety .eyebrow,.safety>span:last-child,.safety h2{display:none}
+  .sticks{padding:8px 4px;gap:4px}
+}
+
+/* ── 鼠标设备（Mac 等）：保留一屏布局，但操作区恢复原始尺寸 ──
+   上面的紧凑尺寸只为触屏平板设计；宽度 ≥1100px 且是鼠标指针时还原。 */
+@media (min-width:1100px) and (min-height:520px) and (hover:hover) and (pointer:fine){
+  .controls{grid-template-columns:1fr 1.5fr .85fr;gap:18px}
+  .controls .panel-head{height:52px;padding:0 20px}
+  .mode-switch{margin:18px 18px 14px}
+  .poses{padding:0 18px}.poses button{padding:12px 3px}
+  .poses button span{display:block;font-size:23px;margin-bottom:8px}
+  .hint{display:block;margin:14px 0;padding:0 18px}
+  .sticks{padding:20px 12px 15px;gap:8px}
+  .joystick{width:136px;height:136px}
+  .knob{width:50px;height:50px;margin:-25px}
+  .stick-caption{margin-top:10px}.stick-caption span{display:inline}
+  .drive-center strong{margin:8px 0;font-size:23px}
+  .speed-control{margin:11px auto 4px}
+  .drive-center p{line-height:1.9;margin:1em 0}
+  #drive-limits{display:block}.deadman{display:inline}
+  .safety{padding:22px 20px;display:block}
+  .safety .eyebrow,.safety>span:last-child{display:inline}
+  .safety h2{display:flex;margin:13px 0;font-size:15px}
+  .safety p{display:block}
+  .safety button{margin:8px 0 12px;padding:12px}
+  .workspace,main{gap:18px}
+}
+@media (min-width:1600px) and (min-height:520px) and (hover:hover) and (pointer:fine){
+  .joystick{width:160px;height:160px}
+}
+
+/* ── 精简操作区：只留功能按键；避障/锁定放在两摇杆中间、速度条下方；急停只留按钮 ── */
+.drive,.modes{display:flex;flex-direction:column}
+.modes-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:6px}
+.sticks{flex:1;align-items:center}
+.stick-caption{font-size:11px}
+.drive-center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.drive-center strong{margin:0}
+.speed-control{display:flex;align-items:center;gap:8px;width:180px;margin:0}
+.speed-control input{flex:1;margin:0}
+.speed-control b{min-width:34px;text-align:right}
+.drive-center .drive-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.drive-center .drive-actions button{font-size:11px;padding:8px 10px;white-space:nowrap}
+.safety{display:flex;padding:14px}
+.safety button{flex:1;width:100%;margin:0;font-size:15px;padding:16px 10px}
+
+/* 第二排比之前高约 10%，空间从第一排两张卡片里扣 */
+@media (min-width:700px) and (min-height:520px){
+  .controls{height:206px;grid-template-rows:minmax(0,1fr)}
+  .safety{display:flex;padding:12px}
+  .safety button{margin:0;padding:12px 8px}
+  .joystick{width:min(17vh,130px,12.5vw);height:min(17vh,130px,12.5vw)}
+  .drive-center{gap:8px}
+}
+@media (min-width:700px) and (min-height:520px) and (orientation:portrait){
+  .controls{height:248px}
+}
+@media (min-width:1100px) and (min-height:520px) and (hover:hover) and (pointer:fine){
+  .controls{height:316px}
+  .safety{display:flex;padding:20px}
+  .joystick{width:150px;height:150px}
+  .drive-center{gap:14px}
+  .drive-center strong{font-size:26px}
+  .drive-center .drive-actions button{font-size:12px;padding:9px 12px}
+}
+@media (min-width:1600px) and (min-height:520px) and (hover:hover) and (pointer:fine){
+  .joystick{width:170px;height:170px}
+}
+.safety{align-items:center}
+.safety button{max-height:140px;height:100%}
+.drive-center{min-width:190px}
+@media (min-width:1100px) and (min-height:520px) and (hover:hover) and (pointer:fine){
+  .joystick{width:min(150px,10.5vw);height:min(150px,10.5vw)}
+}
+@media (min-width:1600px) and (min-height:520px) and (hover:hover) and (pointer:fine){
+  .joystick{width:170px;height:170px}
+}
+
+/* ── 避障 / 控制锁定：做成大号触控按钮（≥44px，符合 iOS 触控目标） ── */
+.drive-center{flex:0 1 300px;min-width:210px;align-self:stretch}
+.speed-control{width:100%}
+.drive-center .drive-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px;width:100%}
+.drive-center .drive-actions button{min-height:46px;padding:10px 8px;font-size:13px;font-weight:550;border-radius:9px;white-space:nowrap}
+.drive-center .drive-actions button.armed{background:#163a36;border-color:#4dbda8}
+@media (min-width:700px) and (min-height:520px){
+  .drive-center .drive-actions button{min-height:44px;font-size:13px}
+}
+@media (min-width:1100px) and (min-height:520px) and (hover:hover) and (pointer:fine){
+  .drive-center .drive-actions button{min-height:52px;font-size:14px;padding:12px 10px}
+}
+
+/* ════ 第二排 v2：左摇杆 | 中控台 | 右摇杆 ════ */
+main .controls{--ctl-h:auto;--stick-w:200px;--js:150px;
+  display:grid;grid-template-columns:var(--stick-w) minmax(0,1fr) var(--stick-w);
+  grid-template-rows:minmax(0,1fr);gap:10px;margin-top:0}
+/* 摇杆面板 */
+.stick-panel{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:10px}
+main .stick-panel .joystick{width:min(calc(100% - 8px),var(--js));height:auto;aspect-ratio:1}
+.stick-panel .knob{width:36%;height:36%;margin:-18%}
+.stick-panel .stick-cross{inset:14%}
+.stick-panel .stick-caption{margin:0;font-size:12px;color:#9fb2bf;letter-spacing:2px}
+.stick-panel .joystick{transition:opacity .2s,filter .2s}
+body:not(.drive-armed) .stick-panel .joystick{opacity:.45;filter:saturate(.4)}
+/* 中控台 */
+.console{display:flex;flex-direction:column;min-width:0}
+.console .panel-head{height:38px;padding:0 14px}
+.console-grid{flex:1;min-height:0;display:grid;gap:10px;padding:12px;
+  grid-template-columns:minmax(0,1fr) minmax(112px,.55fr) minmax(0,1fr);
+  grid-template-rows:minmax(40px,auto) minmax(44px,1fr);
+  grid-template-areas:"mode stop speed" "pose stop drive"}
+.c-mode{grid-area:mode}.c-pose{grid-area:pose}.c-stop{grid-area:stop}.c-speed{grid-area:speed}.c-drive{grid-area:drive}
+.console-grid button{min-height:44px;border-radius:9px;font-size:13px;font-weight:550;white-space:nowrap;padding:8px 6px}
+/* 运动模式：分段控件 */
+.segmented{display:flex;gap:4px;padding:4px;background:#0b1118;border:1px solid var(--line);border-radius:11px}
+.segmented button{flex:1;min-height:36px;border:0;background:none;color:#a9b8c4}
+.segmented button:hover:not(:disabled){background:#1a2530}
+.segmented button.active{color:var(--cyan);background:#203b3a}
+/* 姿态 */
+.c-pose{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.c-pose button{display:flex;align-items:center;justify-content:center;gap:6px;background:#1b242f}
+.c-pose button span{font-size:16px;color:#9cb2c6}
+/* 速度 */
+.c-speed{display:flex;align-items:center;gap:10px;padding:0 12px;background:#0f161d;border:1px solid var(--line);border-radius:11px;min-height:44px}
+.c-speed strong{min-width:86px;font-size:20px;font-weight:500;color:#d7e9e8;font-variant-numeric:tabular-nums;white-space:nowrap}
+.c-speed strong small{font-size:10px;color:#7d919c;margin-left:3px}
+.c-speed input{flex:1;min-width:60px;height:4px;margin:0;accent-color:var(--cyan);cursor:pointer}
+.c-speed b{min-width:38px;text-align:right;color:var(--cyan);font-size:12px;font-weight:600}
+/* 避障 / 控制锁定 */
+.c-drive{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.toggle{background:#1d2834;color:#b6c4cf;border-color:#33424f}
+.toggle.armed{color:var(--cyan);background:#163a36;border-color:#4dbda8}
+/* 急停：中央、最醒目 */
+.c-stop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  background:#4a1d25;border:1px solid #b2444f;color:#ffd0d4;font-size:15px!important;font-weight:650!important;
+  white-space:normal!important;line-height:1.35;box-shadow:inset 0 0 0 1px #ff6b7622,0 6px 18px #0006}
+.c-stop:hover{background:#5d222c}
+.c-stop i{width:16px;height:16px;border-radius:3px;background:#ff6b76;box-shadow:0 0 14px #ff6b7688}
+
+/* 一屏布局下的尺寸：iPad 横屏 */
+@media (min-width:700px) and (min-height:520px){
+  main .controls{height:206px;--stick-w:200px;--js:160px}
+}
+/* 中控台较窄（窄窗口 / 竖屏）：两列，急停横跨底部 */
+@media (min-width:700px) and (min-height:520px) and (max-width:1099px),
+       (min-width:700px) and (min-height:520px) and (orientation:portrait){
+  main .controls{height:252px;--stick-w:180px;--js:150px}
+  .console-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    grid-template-rows:auto auto minmax(44px,1fr);
+    grid-template-areas:"mode speed" "pose drive" "stop stop";gap:8px;padding:10px}
+  .c-stop{flex-direction:row}
+  .c-pose button span{display:none}
+}
+@media (min-width:700px) and (min-height:520px) and (max-width:860px){
+  main .controls{--stick-w:160px;--js:136px}
+}
+/* Mac 等鼠标设备：更宽松 */
+@media (min-width:1100px) and (min-height:520px) and (hover:hover) and (pointer:fine){
+  main .controls{height:316px;--stick-w:270px;--js:220px;gap:18px}
+  .console .panel-head{height:46px;padding:0 18px}
+  .console-grid{gap:14px;padding:18px}
+  .console-grid button{min-height:52px;font-size:14px}
+  .segmented button{min-height:44px}
+  .c-speed{min-height:52px}.c-speed strong{font-size:24px;min-width:104px}
+  .c-stop{font-size:17px!important}
+  .c-stop i{width:20px;height:20px}
+}
+@media (min-width:1600px) and (min-height:520px) and (hover:hover) and (pointer:fine){
+  main .controls{--stick-w:300px;--js:240px}
+}
+/* 手机等小屏：中控台在上，两摇杆并排在下 */
+@media (max-width:699px),(max-height:519px){
+  main .controls{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto;
+    grid-template-areas:"console console" "left right";--js:140px}
+  .console{grid-area:console}.stick-left{grid-area:left}.stick-right{grid-area:right}
+  .console-grid{grid-template-columns:minmax(0,1fr);grid-template-rows:none;
+    grid-template-areas:"mode" "pose" "speed" "drive" "stop"}
+  .c-stop{flex-direction:row;min-height:52px}
+}
+/* 修正：姿态按钮图标在上、文字在下；速度读数与百分比一行、滑条一行；摇杆宽度随窗口收缩 */
+.c-pose button{flex-direction:column;gap:3px;white-space:normal;line-height:1.25;padding:6px 4px}
+.c-speed{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"val pct" "bar bar";
+  align-items:center;row-gap:6px;column-gap:8px;padding:7px 12px}
+.c-speed strong{grid-area:val;min-width:0}.c-speed b{grid-area:pct}
+.c-speed input{grid-area:bar;width:100%;min-width:0}
+@media (min-width:700px) and (min-height:520px) and (max-width:1099px),
+       (min-width:700px) and (min-height:520px) and (orientation:portrait){
+  .c-pose button{flex-direction:row}
+}
+@media (min-width:1100px) and (min-height:520px) and (hover:hover) and (pointer:fine){
+  main .controls{--stick-w:min(270px,19vw);--js:min(220px,15vw)}
+}
+@media (min-width:1600px) and (min-height:520px) and (hover:hover) and (pointer:fine){
+  main .controls{--stick-w:300px;--js:240px}
+}
+.c-stop span{word-break:keep-all}
+/* 一屏布局的横屏窄窗口：第一排保持并排，避免点云卡片被压扁 */
+@media (min-width:700px) and (min-height:520px) and (orientation:landscape){
+  .workspace{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+}
+
+/* ════ 实时建图面板：工具按钮 / 导航状态 / 图例 ════ */
+.slam-tools{display:flex;gap:6px;margin-left:auto;margin-right:10px;min-width:0}
+.tool{font-size:11px;padding:6px 10px;border-radius:7px;background:#1b2530;color:#c9d6df;white-space:nowrap;min-height:30px}
+.tool.active{background:#3b2a56;border-color:#a77bff;color:#e6dbff;box-shadow:0 0 0 1px #a77bff55}
+.tool.danger{color:#ff9aa1;border-color:#82434b;background:#3f252d}
+.cloud canvas.goal-mode{cursor:crosshair}
+.nav-state{position:absolute;top:46px;left:50%;transform:translateX(-50%);z-index:2;padding:6px 12px;border-radius:8px;
+  font-size:11px;background:#131c25e8;border:1px solid var(--line);color:#cfe0e8;pointer-events:none;
+  white-space:nowrap;max-width:calc(100% - 32px);overflow:hidden;text-overflow:ellipsis}
+.nav-state.following{color:#3ddc84;border-color:#2b6b49}
+.nav-state.blocked{color:#ffcc33;border-color:#7a6320}
+.nav-state.failed{color:#ff8c94;border-color:#82434b}
+.nav-state.arrived{color:var(--cyan);border-color:#2f7d71}
+.map-legend{position:absolute;bottom:16px;left:16px;display:flex;align-items:center;gap:4px;font-size:9px;color:#8aa0ad;pointer-events:none;flex-wrap:wrap;max-width:55%}
+.map-legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-left:8px}
+.map-legend i:first-child{margin-left:0}
+.lg-occ{background:#ecf2f6}.lg-free{background:#243a46;outline:1px solid #35505e}.lg-inf{background:#5c4280}
+.map-legend .lg-scan{background:#ffcc33;border-radius:50%;width:6px;height:6px}
+.map-legend .lg-path{background:#3ddc84;width:12px;height:3px}
+@media (min-width:700px) and (min-height:520px){
+  .cloud .panel-head{gap:6px}
+  .slam-tools{margin-right:4px}
+}
+@media (max-width:1100px){.map-legend{display:none}}

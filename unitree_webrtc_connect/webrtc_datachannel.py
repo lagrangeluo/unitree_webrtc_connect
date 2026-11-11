@@ -137,30 +137,28 @@ class WebRTCDataChannel:
 
         decoded_json = json.loads(json_data.decode('utf-8'))
 
-        topic = decoded_json.get("topic", "")
-
-        # Only decode with lidar decoder for lidar topics
-        if "utlidar" in topic:
-            decoded_data = self.decoder.decode(binary_data, decoded_json['data'])
-            decoded_json['data']['data'] = decoded_data
-        else:
-            # Non-lidar binary: attach raw bytes into 'data' field
-            # (chunking system reads from data.data to assemble chunks)
-            decoded_json['data']['data'] = binary_data
-
-        return decoded_json
+        return self._decode_binary_payload(decoded_json, binary_data)
 
     def deal_array_buffer_for_lidar(self, buffer):
         header_length, = struct.unpack_from('<I', buffer, 0)
         json_data = buffer[8:8 + header_length]
         binary_data = buffer[8 + header_length:]
-
         decoded_json = json.loads(json_data.decode('utf-8'))
+        return self._decode_binary_payload(decoded_json, binary_data)
 
-        decoded_data = self.decoder.decode(binary_data, decoded_json['data'])
-
-        decoded_json['data']['data'] = decoded_data
-        return decoded_json
+    def _decode_binary_payload(self, message, binary_data):
+        topic = message.get("topic", "")
+        metadata = message['data']
+        if topic == "rt/utlidar/voxel_map_compressed":
+            try:
+                metadata['data'] = self.decoder.decode(binary_data, metadata)
+            except Exception as exc:
+                logging.exception("Failed to decode compressed LiDAR topic %s", topic)
+                metadata['data'] = {"decode_error": type(exc).__name__}
+        else:
+            # Other topics have no confirmed LZ4 voxel schema. Preserve bytes.
+            metadata['data'] = binary_data
+        return message
 
     
     #Should turn it on when subscribed to ulidar topic

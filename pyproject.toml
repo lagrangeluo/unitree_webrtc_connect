@@ -22,6 +22,8 @@ dependencies = [
     "pyaudio",
     "pydub",
     "opencv-python"
+    ,"aiohttp>=3.10,<4"
+    ,"Pillow>=10"
 ]
 
 [project.scripts]
